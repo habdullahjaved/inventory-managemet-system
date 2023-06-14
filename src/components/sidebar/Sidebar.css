@@ -1,0 +1,29 @@
+/* .sidebar {
+  background-color: #f1f1f1;
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.sidebar ul li a:hover {
+  color: #000;
+} */

@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+// font-family: 'Poppins', sans-serif;
+
+// fonts import
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+// font-family: 'Open Sans', sans-serif;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+// font-family: 'Montserrat', sans-serif;
+
+$primary--color: #016ed0;
+$blue1: #219ebc;
+$blue2: #8ecae6;
+$light--blue1: #d3e3eb;
+$light--blue2: #eff5f8;
+$light--gray: #f0f0f0;
+$body--color: #555555;
+$white: #ffffff;
+$black: #1e1e1e;
+$orange: #fb8500;
+$yellow: #ffb703;
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fbfcfc;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.heading--font {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  transition: all 0.1s;
+}
+a {
+  color: $blue2;
+  text-decoration: none;
+
+  &:hover {
+    color: $light--blue1;
+  }
+}
+
+.table--template {
+  border: 1px solid lightgray;
+  min-height: 50vh;
+  overflow: auto;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #f9f9fa;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  table {
+    width: 100%;
+
+    th {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      color: $blue1;
+    }
+    td,
+    th {
+      border: none;
+      padding-left: 20px;
+      padding-right: 20px;
+      vertical-align: middle;
+    }
+  }
+}
+.padding-table {
+  padding: 40px 0;
+}
+.table--template tr td:last-child {
+  color: $blue1;
+}
+.table--template tr td:first-child {
+  color: $blue1;
+}
+ul.pagination {
+  justify-content: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
