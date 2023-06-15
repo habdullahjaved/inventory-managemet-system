@@ -28,9 +28,10 @@ const Sidebar = () => {
       title: 'New Item',
       icon: <ChevronRight />,
       isOpen: false,
+      link: '/addNewItem',
       submenu: [
-        { id: 1, title: 'Add New Item', link: '/addNewItem' },
-        { id: 2, title: 'List New Item', link: '/listnewItem' },
+        // { id: 1, title: 'Add New Item', link: '/addNewItem' },
+        // { id: 2, title: 'List New Item', link: '/listnewItem' },
       ],
     },
     {
@@ -76,7 +77,7 @@ const Sidebar = () => {
   return (
     <div>
       <div className='sidebar'>
-        <h2 className='logo '>Travel Ustaad</h2>
+        <h2 className='logo '>IMS</h2>
       </div>
       <div className='sidebar-nav'>
         <nav>

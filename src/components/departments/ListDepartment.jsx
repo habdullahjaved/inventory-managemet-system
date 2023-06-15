@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ListDeprtment = () => {
+const ListDepartment = () => {
   return (
     <div>
       <h2>List Department</h2>
@@ -8,4 +8,4 @@ const ListDeprtment = () => {
   );
 };
 
-export default ListDeprtment;
+export default ListDepartment;
