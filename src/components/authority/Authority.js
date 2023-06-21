@@ -4,111 +4,109 @@ import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
-const NewItem = () => {
-  const [item, setItem] = useState({
-    ItemName: '',
+const Authority = () => {
+  const [itemType, setItemType] = useState({
+    authorityname: '',
   });
-  const { ItemName } = item;
-  const [items, setItems] = useState([]);
-  const [itemById, setItemById] = useState({});
+  const { authorityname } = itemType;
+  const [itemTypes, setItemTypes] = useState([]);
+  const [ItemById, setItemById] = useState({});
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleChange = (type, value) => {
-    setItem({ ...item, ItemName: value });
+    setItemType({ ...itemType, authorityname: value });
+  };
+  const handleEditChange = (type, value) => {
+    setItemById({ ...ItemById, authorityname: value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       await axios
-        .post('http://localhost:8000/api/itemnames', item)
+        .post('http://localhost:8000/api/authorities', itemType)
         .then((res) => {
-          setItem('');
           console.log(res.data);
         });
 
-      getItems();
+      getItemTypes();
     } catch (error) {
       console.log(error);
     }
-    console.log(item);
   };
-
-  const getItems = async () => {
+  const handleDelete = async (id) => {
     try {
       await axios
-        .get('http://localhost:8000/api/itemnames')
-        .then((res) => setItems(res.data));
+        .delete(`http://localhost:8000/api/authorities/${id}`)
+        .then((res) => alert('Authority deleted Successfully'));
+      getItemTypes();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getItemTypes = async () => {
+    try {
+      await axios
+        .get('http://localhost:8000/api/authorities')
+        .then((res) => setItemTypes(res.data));
     } catch (error) {
       console.log(error);
     }
   };
-  const getItemById = async (id) => {
+
+  const getItemTypeById = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/itemnames/${id}`
+        `http://localhost:8000/api/authorities/${id}`
       );
       setItemById(response.data);
     } catch (err) {
       console.log(err);
     }
   };
-  const handleEditChange = (type, value) => {
-    setItemById({ ...itemById, ItemName: value });
-  };
   const handleUpdate = async (e, id) => {
     e.preventDefault();
 
     const data = {
-      ItemName: itemById.ItemName,
+      authorityname: ItemById.authorityname,
     };
     console.log(data);
     console.log(id);
     try {
       await axios
-        .put(`http://localhost:8000/api/itemnames/${id}`, data, {
+        .put(`http://localhost:8000/api/authorities/${id}`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => console.log(res.data));
       setShow(false);
-      getItems();
+      getItemTypes();
     } catch (err) {
       console.log(err);
     }
   };
   const handleEdit = (id) => {
     setShow(true);
-    getItemById(id);
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios
-        .delete(`http://localhost:8000/api/itemnames/${id}`)
-        .then((res) => alert('Item deleted Successfully'));
-      getItems();
-    } catch (err) {
-      console.log(err);
-    }
+    getItemTypeById(id);
   };
   useEffect(() => {
-    getItems();
+    getItemTypes();
   }, []);
   return (
     <div className='page-wrapper p-2'>
-      <h2 className='page-title'>Add Item</h2>
+      <h2 className='page-title'>Add Authority Name</h2>
       <div className='row'>
         <div className='col-sm-12 col-md-12 col-lg-6'>
           <div className='card p-3 ipnr-card'>
             <form className='search-flight' onSubmit={handleSubmit}>
               <div className='row mb-1 mt-3'>
                 <div className='col-sm-12 col-md-12 col-lg-12 mt-1 mb-4 '>
-                  <label htmlFor='ctype'>Item Name</label>
+                  <label htmlFor='ctype'>Name</label>
                   <InputComponent
                     type={'text'}
-                    name={'ItemName'}
-                    placeholder={'Item Name'}
+                    name={'authorityname'}
+                    placeholder={' Name'}
                     className='form-control'
                     handleChange={handleChange}
                   />
@@ -117,7 +115,7 @@ const NewItem = () => {
               <div className='row'>
                 <div className='col-sm-12 col-md-12 col-lg-12'>
                   <button type='submit' className='btn btn-primary w-100'>
-                    Add New Item{' '}
+                    Add Authority
                   </button>
                 </div>
               </div>
@@ -125,35 +123,34 @@ const NewItem = () => {
           </div>
         </div>
         <div className='col-sm-12 col-md-12 col-lg-6'>
-          <div className='card table-card'>
+          <div className='card py-2 px-1'>
             <table className='table table-bordered table-striped'>
               <thead>
                 <tr>
                   <th>Sr.No</th>
-                  <th>Item Name</th>
+                  <th>Item Type</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {items?.map((itemN, index) => (
-                  <tr key={itemN.id}>
+                {itemTypes?.map((itmType, index) => (
+                  <tr key={itmType.id}>
                     <td>{index + 1}</td>
-                    <td>{itemN.ItemName}</td>
+                    <td>{itmType.authorityname}</td>
                     <td>
                       <div
                         className='btn-group d-flex justify-content-center'
                         role='group'
                       >
-                        {/* <Link className='btn btn-primary btn-sm'>View</Link> */}
-                        <Link
+                        <button
                           className='btn btn-success btn-sm'
-                          onClick={() => handleEdit(itemN.id)}
+                          onClick={() => handleEdit(itmType.id)}
                         >
                           Edit
-                        </Link>
+                        </button>
                         <button
                           className='btn btn-danger btn-sm'
-                          onClick={() => handleDelete(itemN.id)}
+                          onClick={() => handleDelete(itmType.id)}
                         >
                           Delete
                         </button>
@@ -169,19 +166,19 @@ const NewItem = () => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Item</Modal.Title>
+          <Modal.Title>Edit Item Type</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className='card p-3 ipnr-card'>
             <form className='search-flight'>
               <div className='row mb-1 mt-3'>
                 <div className='col-sm-12 col-md-12 col-lg-12 mt-1 mb-4 '>
-                  <label htmlFor='ctype'>Item Name</label>
+                  <label htmlFor='ctype'>Name</label>
                   <InputComponent
                     type={'text'}
-                    name={'ItemName'}
+                    name={'authorityname'}
                     placeholder={''}
-                    value={itemById?.ItemName}
+                    value={ItemById?.authorityname}
                     className='form-control'
                     handleChange={handleEditChange}
                   />
@@ -192,7 +189,7 @@ const NewItem = () => {
                   <button
                     type='submit'
                     className='btn btn-success w-100'
-                    onClick={(e) => handleUpdate(e, itemById?.id)}
+                    onClick={(e) => handleUpdate(e, ItemById.id)}
                   >
                     Update
                   </button>
@@ -201,17 +198,9 @@ const NewItem = () => {
             </form>
           </div>
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant='primary' onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
       </Modal>
     </div>
   );
 };
 
-export default NewItem;
+export default Authority;

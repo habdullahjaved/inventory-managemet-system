@@ -1,0 +1,15 @@
+@media (max-width: 768px) {
+  .card-margin-top {
+    margin-top: 10px !important;
+  }
+}
+.table-responsive {
+  padding: 10px;
+  table {
+    th,
+    td {
+      font-size: 14px;
+      white-space: nowrap !important;
+    }
+  }
+}

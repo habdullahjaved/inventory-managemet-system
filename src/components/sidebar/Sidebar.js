@@ -15,12 +15,12 @@ const Sidebar = () => {
     },
     {
       id: 2,
-      title: 'Usage',
+      title: 'Expense',
       icon: <ChevronRight />,
       isOpen: false,
       submenu: [
-        { id: 1, title: 'Add Usage', link: '/addUsage' },
-        { id: 2, title: 'List Usage', link: '/listUsage' },
+        { id: 1, title: 'Add Expense', link: '/addexpense' },
+        { id: 2, title: 'Expenses', link: '/expenses' },
       ],
     },
     {
@@ -39,9 +39,10 @@ const Sidebar = () => {
       title: 'New Department',
       icon: <ChevronRight />,
       isOpen: false,
+      link: '/addNewDepartment',
       submenu: [
-        { id: 1, title: 'Add New Department', link: '/addNewDepartment' },
-        { id: 2, title: 'List New Department', link: '/listnewDepartment' },
+        // { id: 1, title: 'Add New Department', link: '/addNewDepartment' },
+        // { id: 2, title: 'List New Department', link: '/listnewDepartment' },
       ],
     },
     {
@@ -49,9 +50,10 @@ const Sidebar = () => {
       title: 'New Person',
       icon: <ChevronRight />,
       isOpen: false,
+      link: '/addNewPerson',
       submenu: [
-        { id: 1, title: 'Add New Person', link: '/addNewPerson' },
-        { id: 2, title: 'List New Person', link: '/listnewPerson' },
+        // { id: 1, title: 'Add New Person', link: '/addNewPerson' },
+        // { id: 2, title: 'List New Person', link: '/listnewPerson' },
       ],
     },
     {
@@ -59,10 +61,27 @@ const Sidebar = () => {
       title: 'New Item Type',
       icon: <ChevronRight />,
       isOpen: false,
+      link: '/addNewType',
       submenu: [
-        { id: 1, title: 'Add New Type', link: '/addNewType' },
-        { id: 2, title: 'List New Type', link: '/listnewType' },
+        // { id: 1, title: 'Add New Type', link: '/addNewType' },
+        // { id: 2, title: 'List New Type', link: '/listnewType' },
       ],
+    },
+    {
+      id: 7,
+      title: 'Authority',
+      icon: <ChevronRight />,
+      isOpen: false,
+      link: '/authority',
+      submenu: [],
+    },
+    {
+      id: 8,
+      title: 'Expense Type',
+      icon: <ChevronRight />,
+      isOpen: false,
+      link: '/expensetype',
+      submenu: [],
     },
   ]);
   const handleOpenMenu = (id) => {
@@ -82,7 +101,7 @@ const Sidebar = () => {
       <div className='sidebar-nav'>
         <nav>
           <ul>
-            {menus.map((menu) => (
+            {menus?.map((menu) => (
               <li className='nav-item'>
                 <Link
                   className={
@@ -102,9 +121,9 @@ const Sidebar = () => {
                     )}
                   </span>
                 </Link>
-                {menu.isOpen && (
+                {menu.isOpen && menu?.submenu?.length > 0 && (
                   <div className='drop-down'>
-                    {menu.submenu.length > 0
+                    {menu?.submenu.length > 0
                       ? menu.submenu?.map((item) => (
                           <li className='submenue-list-item'>
                             <Link className='submenue-link' to={item.link}>

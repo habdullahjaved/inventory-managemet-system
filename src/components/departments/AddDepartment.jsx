@@ -10,6 +10,9 @@ const AddDepartment = () => {
   });
   // Get From api
   const [Departments, setDepartments] = useState([]);
+  const [DepartmentById, setDepartmentById] = useState({
+    DepartmentName: '',
+  });
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -19,23 +22,78 @@ const AddDepartment = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await axios
-      .post('http://localhost:8000/api/departments', Department)
-      .then((res) => console.log(res.data));
-    console.log(Department);
+    try {
+      await axios
+        .post('http://localhost:8000/api/departments', Department)
+        .then((res) => console.log(res.data));
+      setDepartment();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getDepartments = async () => {
-    const response = await axios.get('http://localhost:8000/api/departments');
-    setDepartments(response.data);
+    try {
+      const response = await axios.get('http://localhost:8000/api/departments');
+      setDepartments(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getDepartmentById = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/departments/${id}`
+      );
+      setDepartmentById(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleEditChange = (type, value) => {
+    setDepartmentById({ ...DepartmentById, DepartmentName: value });
+  };
+  const handleUpdate = async (e, id) => {
+    e.preventDefault();
+    console.log(DepartmentById);
+    const data = {
+      DepartmentName: DepartmentById.DepartmentName,
+    };
+    console.log(data);
+    console.log(id);
+    try {
+      await axios
+        .put(`http://localhost:8000/api/departments/${id}`, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => console.log(res.data));
+      setShow(false);
+      getDepartments();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:8000/api/departments/${id}`)
+        .then((res) => alert('Department deleted Successfully'));
+      getDepartments();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     getDepartments();
   }, []);
+
+  const handleEdit = (id) => {
+    setShow(true);
+    getDepartmentById(id);
+  };
   return (
-    <div className='page-wrapper'>
+    <div className='page-wrapper p-2'>
       <h2 className='page-title'>Add Department</h2>
       <div className='row'>
         <div className='col-sm-12 col-md-12 col-lg-6'>
@@ -43,7 +101,7 @@ const AddDepartment = () => {
             <form className='search-flight' onSubmit={handleSubmit}>
               <div className='row mb-1 mt-3'>
                 <div className='col-sm-12 col-md-12 col-lg-12 mt-1 mb-4 '>
-                  <label htmlFor='ctype'>Add Department</label>
+                  <label htmlFor='ctype'>Department Name</label>
                   <InputComponent
                     type={'text'}
                     name={'DepartmentName'}
@@ -63,8 +121,8 @@ const AddDepartment = () => {
             </form>
           </div>
         </div>
-        <div className='col-sm-12 col-md-12 col-lg-6'>
-          <div className='card py-2 px-1'>
+        <div className='col-sm-12 col-md-12  col-lg-6 card-margin-top'>
+          <div className='card table-card'>
             <table className='table table-bordered table-striped'>
               <thead>
                 <tr>
@@ -74,7 +132,7 @@ const AddDepartment = () => {
                 </tr>
               </thead>
               <tbody>
-                {Departments.map((deprtment, index) => (
+                {Departments?.map((deprtment, index) => (
                   <tr>
                     <td>{index + 1}</td>
                     <td>{deprtment.DepartmentName}</td>
@@ -84,13 +142,16 @@ const AddDepartment = () => {
                         role='group'
                       >
                         {/* <Link className='btn btn-primary btn-sm'>View</Link> */}
-                        <Link
+                        <button
                           className='btn btn-success btn-sm'
-                          onClick={handleShow}
+                          onClick={() => handleEdit(deprtment.DepartmentID)}
                         >
                           Edit
-                        </Link>
-                        <button className='btn btn-danger btn-sm'>
+                        </button>
+                        <button
+                          className='btn btn-danger btn-sm'
+                          onClick={() => handleDelete(deprtment.DepartmentID)}
+                        >
                           Delete
                         </button>
                       </div>
@@ -109,22 +170,29 @@ const AddDepartment = () => {
         </Modal.Header>
         <Modal.Body>
           <div className='card p-3 ipnr-card'>
-            <form className='search-flight' onSubmit={handleSubmit}>
+            <form className='search-flight'>
               <div className='row mb-1 mt-3'>
                 <div className='col-sm-12 col-md-12 col-lg-12 mt-1 mb-4 '>
                   <label htmlFor='ctype'>Update Department</label>
                   <InputComponent
                     type={'text'}
                     name={'DepartmentName'}
+                    value={DepartmentById?.DepartmentName}
                     placeholder={'Department Name'}
                     className='form-control'
-                    handleChange={handleChange}
+                    handleChange={handleEditChange}
                   />
                 </div>
               </div>
               <div className='row'>
                 <div className='col-sm-12 col-md-12 col-lg-12'>
-                  <button type='submit' className='btn btn-success w-100'>
+                  <button
+                    type='submit'
+                    className='btn btn-success w-100'
+                    onClick={(e) =>
+                      handleUpdate(e, DepartmentById.DepartmentID)
+                    }
+                  >
                     Update
                   </button>
                 </div>

@@ -21,9 +21,12 @@ import EditPerson from './components/purchasingperson/EditPerson';
 import NewItemType from './components/itemtype/NewItemType';
 import ListItemType from './components/itemtype/ListItemType';
 import EditItemType from './components/itemtype/EditItemType';
-import AddUsage from './components/usage/AddUsage';
-import ListUsage from './components/usage/ListUsage';
-import EditUsage from './components/usage/EditUsage';
+import Authority from './components/authority/Authority';
+import AddExpense from './components/expenses/AddExpense';
+import ListExpense from './components/expenses/ListExpense';
+import EditExpense from './components/expenses/EditExpense';
+import ViewExpense from './components/expenses/ViewExpense';
+import ExpenseType from './components/expensetype/ExpenseType';
 function App() {
   return (
     <>
@@ -51,9 +54,12 @@ function App() {
               <Route path='/addNewType' element={<NewItemType />} />
               <Route path='/listnewType' element={<ListItemType />} />
               <Route path='/edititemtype/:id' element={<EditItemType />} />
-              <Route path='/addUsage' element={<AddUsage />} />
-              <Route path='/listUsage' element={<ListUsage />} />
-              <Route path='/editusage' element={<EditUsage />} />
+              <Route path='/addexpense' element={<AddExpense />} />
+              <Route path='/expenses' element={<ListExpense />} />
+              <Route path='/editexpense/:id' element={<EditExpense />} />
+              <Route path='/viewexpense/:id' element={<ViewExpense />} />
+              <Route path='/authority' element={<Authority />} />
+              <Route path='/expensetype' element={<ExpenseType />} />
             </Routes>
           </div>
         </div>

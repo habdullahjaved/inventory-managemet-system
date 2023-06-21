@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 import axios from 'axios';
-const ItemListing = () => {
+const ListExpense = () => {
   useEffect(() => {
     Aos.init();
   }, []);
@@ -17,7 +17,7 @@ const ItemListing = () => {
   };
   const getItems = async () => {
     try {
-      await axios.get(`http://localhost:8000/api/items`).then((res) => {
+      await axios.get(`http://localhost:8000/api/expenses`).then((res) => {
         setItems(res.data);
       });
     } catch (error) {
@@ -42,7 +42,7 @@ const ItemListing = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:8000/api/items/${id}`)
+        .delete(`http://localhost:8000/api/expenses/${id}`)
         .then((res) => {
           console.log(res.data);
           alert('Item deleted Succefully');
@@ -57,59 +57,60 @@ const ItemListing = () => {
     getItems();
   }, []);
   return (
-    <div className='container'>
-      <div className='row'>
-        <div className='col-sm-12 col-md-12 col-lg-12'>
-          <div className='card py-4 agent-void-card' data-aos='fade-up'>
-            <div className='row ms-3'>
-              <div className='col-md-6'>
-                <form
-                  onSubmit={(e) => handleSearchSubmit(e)}
-                  className='d-flex justify-content-start'
-                >
-                  <label htmlFor='search' className='mt-2'>
-                    Search:
-                  </label>
-                  <input
-                    type='text'
-                    name='searchbar'
-                    placeholder='Search here...'
-                    value={searchInput}
-                    className='form-control ms-2 w-50'
-                    onChange={(e) => handleSearch(e)}
-                  />
-                </form>
+    <div className='page-wrapper'>
+      <h2 className='page-title ps-3'>Expenses</h2>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-sm-12 col-md-12 col-lg-12'>
+            <div className='card py-4 agent-void-card' data-aos='fade-up'>
+              <div className='row'>
+                <div className='col-md-6'>
+                  <form
+                    onSubmit={(e) => handleSearchSubmit(e)}
+                    className='d-flex justify-content-start ps-3'
+                  >
+                    <label htmlFor='search' className='mt-2'>
+                      Search:
+                    </label>
+                    <input
+                      type='text'
+                      name='searchbar'
+                      placeholder='Search here...'
+                      value={searchInput}
+                      className='form-control w-50'
+                      onChange={(e) => handleSearch(e)}
+                    />
+                  </form>
+                </div>
+                <div className='col-md-6'></div>
               </div>
-              <div className='col-md-6'></div>
-            </div>
 
-            <div className='row'>
-              <div className='col-sm-12 col-md-12 col-lg-12'>
-                <div className='table-responsive mt-2'>
-                  <table className='table table-bordered table-striped'>
-                    <thead>
-                      <tr>
-                        <th className='text-wrap'>Name</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>MinuteSheet Number</th>
-                        <th>Quantity</th>
-                        <th className='text-wrap'>Date of Purchase</th>
-                        <th className='text-wrap'>Rate Per Unit</th>
-                        <th>Total Cost</th>
-                        <th>Department</th>
-                        <th>Purchasing Person</th>
-                        <th>On Charge Of</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {items && items.length > 0 ? (
-                        items
-                          ?.filter(searchItems(searchInput))
-                          ?.map(
+              <div className='row'>
+                <div className='col-sm-12 col-md-12 col-lg-12'>
+                  <div className='table-responsive mt-2'>
+                    <table className='table table-bordered table-striped'>
+                      <thead>
+                        <tr>
+                          <th className='text-wrap'>Name</th>
+                          <th>Type</th>
+                          <th>Description</th>
+                          <th>MinuteSheet Number</th>
+                          <th>Quantity</th>
+                          <th>Expense</th>
+                          <th>Expense Type</th>
+                          <th className='text-wrap'>Date of Purchase</th>
+                          <th className='text-wrap'>Rate Per Unit</th>
+                          <th>Total Cost</th>
+                          <th>Department</th>
+                          <th>Purchasing Person</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {items && items.length > 0 ? (
+                          items?.filter(searchItems(searchInput))?.map(
                             ({
-                              ItemID,
+                              id,
                               ItemName,
                               ItemType,
                               Description,
@@ -120,39 +121,43 @@ const ItemListing = () => {
                               minuteSheetNumber,
                               DepartmentID,
                               PurchasingPersonID,
-                              authorityname,
+
                               purchasing_person,
                               department,
+                              expense_type,
+                              expense_ammount,
                             }) => (
-                              <tr key={ItemID}>
+                              <tr key={id}>
                                 <td>{ItemName}</td>
                                 <td>{ItemType}</td>
                                 <td>{Description}</td>
                                 <td>{minuteSheetNumber}</td>
                                 <td>{Quantity}</td>
+                                <td>{expense_ammount}</td>
+                                <td>{expense_type}</td>
                                 <td>{DateOfPurchase}</td>
                                 <td>{RatePerUnit}</td>
                                 <td>{TotalCost}</td>
                                 <td>{department.DepartmentName}</td>
                                 <td>{purchasing_person.Name}</td>
-                                <td>{authorityname}</td>
+
                                 <td>
                                   <div className='btn-group' role='group'>
                                     <Link
                                       className='btn btn-primary btn-sm'
-                                      to={`/viewitem/${ItemID}`}
+                                      to={`/viewexpense/${id}`}
                                     >
                                       View
                                     </Link>
                                     <Link
-                                      to={`/edititem/${ItemID}`}
+                                      to={`/editexpense/${id}`}
                                       className='btn btn-success btn-sm'
                                     >
                                       Edit
                                     </Link>
                                     <button
                                       className='btn btn-danger btn-sm'
-                                      onClick={() => handleDelete(ItemID)}
+                                      onClick={() => handleDelete(id)}
                                     >
                                       Delete
                                     </button>
@@ -161,13 +166,14 @@ const ItemListing = () => {
                               </tr>
                             )
                           )
-                      ) : (
-                        <tr>
-                          <td colSpan='12'>No items found.</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
+                        ) : (
+                          <tr>
+                            <td colSpan='12'>No items found.</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -178,4 +184,4 @@ const ItemListing = () => {
   );
 };
 
-export default ItemListing;
+export default ListExpense;

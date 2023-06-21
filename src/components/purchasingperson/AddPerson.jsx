@@ -5,43 +5,106 @@ import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 const AddPerson = () => {
-  const [DepartmentName, setDepartmentName] = useState('');
-  // Get From api
-  const [Departments, setDepartments] = useState([]);
-  const [show, setShow] = useState(false);
+  const [pPerson, setPPerson] = useState({
+    Name: '',
+  });
 
+  const { Name } = pPerson;
+  const [purchasingPersons, setPurchasingPersons] = useState([]);
+  const [purPersonById, setPurPersonById] = useState({});
+  // Get From api
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleChange = (type, value) => {
-    setDepartmentName(value);
+    setPPerson({ ...pPerson, Name: value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(DepartmentName);
+    try {
+      await axios
+        .post('http://localhost:8000/api/purchasingpersons', pPerson)
+        .then((res) => {
+          console.log(res.data);
+        });
+      getPurchasingPersons();
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(pPerson);
   };
 
-  const getDepartments = async () => {
-    const response = await axios.get('http://localhost:8000/api/departments');
-    setDepartments(response.data);
+  const getPurchasingPersons = async () => {
+    const response = await axios.get(
+      'http://localhost:8000/api/purchasingpersons'
+    );
+    setPurchasingPersons(response.data);
+  };
+  const getPPersonById = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/purchasingpersons/${id}`
+      );
+      setPurPersonById(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleEditChange = (type, value) => {
+    setPurPersonById({ ...purPersonById, Name: value });
+  };
+  const handleUpdate = async (e, id) => {
+    e.preventDefault();
+
+    const data = {
+      Name: purPersonById.Name,
+    };
+    console.log(data);
+    console.log(id);
+    try {
+      await axios
+        .put(`http://localhost:8000/api/purchasingpersons/${id}`, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => console.log(res.data));
+      setShow(false);
+      getPurchasingPersons();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .delete(`http://localhost:8000/api/purchasingpersons/${id}`)
+        .then((res) => alert('Person deleted Successfully'));
+      getPurchasingPersons();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleEdit = (id) => {
+    setShow(true);
+    getPPersonById(id);
   };
   useEffect(() => {
-    getDepartments();
+    getPurchasingPersons();
   }, []);
 
   return (
-    <div className='page-wrapper'>
-      <h2 className='page-title'>Add Department</h2>
+    <div className='page-wrapper p-2'>
+      <h2 className='page-title'>Add Person</h2>
       <div className='row'>
         <div className='col-sm-12 col-md-12 col-lg-6'>
           <div className='card p-3 ipnr-card'>
             <form className='search-flight' onSubmit={handleSubmit}>
               <div className='row mb-1 mt-3'>
                 <div className='col-sm-12 col-md-12 col-lg-12 mt-1 mb-4 '>
-                  <label htmlFor='ctype'>Add Department</label>
+                  <label htmlFor='ctype'>Person Name</label>
                   <InputComponent
                     type={'text'}
-                    name={'DepartmentName'}
-                    placeholder={'Department Name'}
+                    name={'Name'}
+                    placeholder={'Person Name'}
                     className='form-control'
                     handleChange={handleChange}
                   />
@@ -50,7 +113,7 @@ const AddPerson = () => {
               <div className='row'>
                 <div className='col-sm-12 col-md-12 col-lg-12'>
                   <button type='submit' className='btn btn-primary w-100'>
-                    Add Item Type
+                    Add Person
                   </button>
                 </div>
               </div>
@@ -68,25 +131,36 @@ const AddPerson = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>ICT</td>
-                  <td>
-                    <div
-                      className='btn-group d-flex justify-content-center'
-                      role='group'
-                    >
-                      {/* <Link className='btn btn-primary btn-sm'>View</Link> */}
-                      <Link
-                        className='btn btn-success btn-sm'
-                        onClick={handleShow}
+                {purchasingPersons?.map((p_person, index) => (
+                  <tr key={p_person.PurchasingPersonID}>
+                    <td>{index + 1}</td>
+                    <td>{p_person?.Name}</td>
+                    <td>
+                      <div
+                        className='btn-group d-flex justify-content-center'
+                        role='group'
                       >
-                        Edit
-                      </Link>
-                      <button className='btn btn-danger btn-sm'>Delete</button>
-                    </div>
-                  </td>
-                </tr>
+                        {/* <Link className='btn btn-primary btn-sm'>View</Link> */}
+                        <Link
+                          className='btn btn-success btn-sm'
+                          onClick={() =>
+                            handleEdit(p_person.PurchasingPersonID)
+                          }
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          className='btn btn-danger btn-sm'
+                          onClick={() =>
+                            handleDelete(p_person.PurchasingPersonID)
+                          }
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -95,26 +169,33 @@ const AddPerson = () => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Department</Modal.Title>
+          <Modal.Title>Edit Person</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className='card p-3 ipnr-card'>
-            <form className='search-flight' onSubmit={handleSubmit}>
+            <form className='search-flight'>
               <div className='row mb-1 mt-3'>
                 <div className='col-sm-12 col-md-12 col-lg-12 mt-1 mb-4 '>
-                  <label htmlFor='ctype'>Update Department</label>
+                  <label htmlFor='ctype'>Person Name</label>
                   <InputComponent
                     type={'text'}
-                    name={'DepartmentName'}
-                    placeholder={'Department Name'}
+                    name={'Name'}
+                    placeholder={'Person Name'}
+                    value={purPersonById?.Name}
                     className='form-control'
-                    handleChange={handleChange}
+                    handleChange={handleEditChange}
                   />
                 </div>
               </div>
               <div className='row'>
                 <div className='col-sm-12 col-md-12 col-lg-12'>
-                  <button type='submit' className='btn btn-success w-100'>
+                  <button
+                    type='submit'
+                    className='btn btn-success w-100'
+                    onClick={(e) =>
+                      handleUpdate(e, purPersonById.PurchasingPersonID)
+                    }
+                  >
                     Update
                   </button>
                 </div>
@@ -122,14 +203,6 @@ const AddPerson = () => {
             </form>
           </div>
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant='primary' onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
       </Modal>
     </div>
   );
