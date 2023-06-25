@@ -163,7 +163,19 @@ const EditItem = () => {
   // };
 
   const handleChange = (e) => {
-    setItemById({ ...itemById, [e.target.name]: e.target.value });
+    // setItemById({ ...itemById, [e.target.name]: e.target.value });
+
+    const { name, value } = e.target;
+
+    if (name === 'Quantity' || name === 'RatePerUnit') {
+      const updatedTotalCost =
+        name === 'Quantity'
+          ? value * itemById.RatePerUnit
+          : value * itemById.Quantity;
+      setItemById({ ...itemById, [name]: value, TotalCost: updatedTotalCost });
+    } else {
+      setItemById({ ...itemById, [name]: value });
+    }
   };
   const handleSubmit = async (e, id) => {
     e.preventDefault();
@@ -251,12 +263,12 @@ const EditItem = () => {
             />
           </div>
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-            <label htmlFor='pax Name'>Quantity</label>
+            <label htmlFor='pax Name'>Minute Sheet Number</label>
             <input
-              type='number'
-              name='Quantity'
-              value={itemById?.Quantity}
-              placeholder='Quantity'
+              type='text'
+              name='minuteSheetNumber'
+              value={itemById?.minuteSheetNumber}
+              placeholder='Minute Sheet Number'
               className='form-control'
               onChange={handleChange}
             />
@@ -272,6 +284,18 @@ const EditItem = () => {
               onChange={handleChange}
             />
           </div>
+          <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+            <label htmlFor='pax Name'>Quantity</label>
+            <input
+              type='number'
+              name='Quantity'
+              value={itemById?.Quantity}
+              placeholder='Quantity'
+              className='form-control'
+              onChange={handleChange}
+            />
+          </div>
+
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
             <label htmlFor='pax Name'>Rate per Unit</label>
             <input
@@ -294,17 +318,7 @@ const EditItem = () => {
               onChange={handleChange}
             />
           </div>
-          <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-            <label htmlFor='pax Name'>Minute Sheet Number</label>
-            <input
-              type='text'
-              name='minuteSheetNumber'
-              value={itemById?.minuteSheetNumber}
-              placeholder='Minute Sheet Number'
-              className='form-control'
-              onChange={handleChange}
-            />
-          </div>
+
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
             <label htmlFor='ctype'>Department</label>
             <select

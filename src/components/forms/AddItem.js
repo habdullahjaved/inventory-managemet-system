@@ -39,6 +39,22 @@ const AddItem = () => {
   const [authorities, setAuthorities] = useState([]);
   const navigate = useNavigate();
 
+  // const handleChange = (e) => {
+  //   setItem({ ...item, [e.target.name]: e.target.value });
+  // };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'Quantity' || name === 'RatePerUnit') {
+      const updatedTotalCost =
+        name === 'Quantity' ? value * RatePerUnit : value * Quantity;
+      setItem({ ...item, [name]: value, TotalCost: updatedTotalCost });
+    } else {
+      setItem({ ...item, [name]: value });
+    }
+  };
+
   const getItemNames = async () => {
     try {
       await axios
@@ -80,9 +96,6 @@ const AddItem = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setItem({ ...item, [e.target.name]: e.target.value });
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(item);
@@ -165,17 +178,6 @@ const AddItem = () => {
             />
           </div>
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-            <label htmlFor='pax Name'>Quantity</label>
-            <input
-              type='number'
-              name='Quantity'
-              value={Quantity}
-              placeholder='Quantity'
-              className='form-control'
-              onChange={handleChange}
-            />
-          </div>
-          <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
             <label htmlFor='pax Name'>Date of Purchase</label>
             <input
               type='date'
@@ -186,6 +188,18 @@ const AddItem = () => {
               onChange={handleChange}
             />
           </div>
+          <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+            <label htmlFor='pax Name'>Quantity</label>
+            <input
+              type='number'
+              name='Quantity'
+              value={Quantity}
+              placeholder='Quantity'
+              className='form-control'
+              onChange={handleChange}
+            />
+          </div>
+
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
             <label htmlFor='pax Name'>Rate per Unit</label>
             <input
@@ -202,7 +216,7 @@ const AddItem = () => {
             <input
               type='number'
               name='TotalCost'
-              value={Quantity * RatePerUnit}
+              value={TotalCost}
               placeholder='Total Cost'
               className='form-control'
               onChange={handleChange}

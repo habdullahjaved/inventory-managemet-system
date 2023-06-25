@@ -92,8 +92,8 @@ const ItemListing = () => {
                         <th>Type</th>
                         <th>Description</th>
                         <th>MinuteSheet Number</th>
-                        <th>Quantity</th>
                         <th className='text-wrap'>Date of Purchase</th>
+                        <th>Quantity</th>
                         <th className='text-wrap'>Rate Per Unit</th>
                         <th>Total Cost</th>
                         <th>Department</th>
@@ -128,8 +128,8 @@ const ItemListing = () => {
                                 <td>{ItemType}</td>
                                 <td>{Description}</td>
                                 <td>{minuteSheetNumber}</td>
-                                <td>{Quantity}</td>
                                 <td>{DateOfPurchase}</td>
+                                <td>{Quantity}</td>
                                 <td>{RatePerUnit}</td>
                                 <td>{TotalCost}</td>
                                 <td>{department.DepartmentName}</td>
