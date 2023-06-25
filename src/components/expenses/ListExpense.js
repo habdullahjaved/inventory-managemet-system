@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 import axios from 'axios';
+import { API_LINK } from '../../commons/Constants';
 const ListExpense = () => {
   useEffect(() => {
     Aos.init();
@@ -17,7 +18,7 @@ const ListExpense = () => {
   };
   const getItems = async () => {
     try {
-      await axios.get(`http://localhost:8000/api/expenses`).then((res) => {
+      await axios.get(`${API_LINK}expenses`).then((res) => {
         setItems(res.data);
       });
     } catch (error) {
@@ -41,13 +42,11 @@ const ListExpense = () => {
   const handleEdit = (id) => {};
   const handleDelete = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:8000/api/expenses/${id}`)
-        .then((res) => {
-          console.log(res.data);
-          alert('Item deleted Succefully');
-          getItems();
-        });
+      await axios.delete(`${API_LINK}expenses/${id}`).then((res) => {
+        console.log(res.data);
+        alert('Item deleted Succefully');
+        getItems();
+      });
     } catch (error) {
       console.log(error);
     }

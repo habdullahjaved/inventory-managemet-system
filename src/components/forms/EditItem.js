@@ -3,6 +3,7 @@ import SelectComponent from './../inputComponents/SelectComponent';
 import InputComponent from './../inputComponents/InputComponent';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router';
+import { API_LINK } from '../../commons/Constants';
 const EditItem = () => {
   const [item, setItem] = useState({
     ItemName: '',
@@ -56,7 +57,7 @@ const EditItem = () => {
   const getItemNames = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/itemnames')
+        .get(`${API_LINK}itemnames`)
         .then((res) => setItemNames(res.data));
     } catch (error) {
       console.log(error);
@@ -65,21 +66,19 @@ const EditItem = () => {
   const getItemTypes = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/itemtypes')
+        .get(`${API_LINK}itemtypes`)
         .then((res) => setItemTypes(res.data));
     } catch (error) {
       console.log(error);
     }
   };
   const getPurchasingPersons = async () => {
-    const response = await axios.get(
-      'http://localhost:8000/api/purchasingpersons'
-    );
+    const response = await axios.get(`${API_LINK}purchasingpersons`);
     setPurchasingPersons(response.data);
   };
   const getDepartments = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/departments');
+      const response = await axios.get(`${API_LINK}departments`);
       setDepartments(response.data);
     } catch (err) {
       console.log(err);
@@ -89,7 +88,7 @@ const EditItem = () => {
   const getAuthorities = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/authorities')
+        .get(`${API_LINK}authorities`)
         .then((res) => setAuthorities(res.data));
     } catch (error) {
       console.log(error);
@@ -171,14 +170,12 @@ const EditItem = () => {
     console.log(itemById);
 
     try {
-      await axios
-        .put(`http://localhost:8000/api/items/${id}`, itemById)
-        .then((res) => {
-          console.log(res.data);
-          if (res.data) {
-            navigate('/');
-          }
-        });
+      await axios.put(`${API_LINK}items/${id}`, itemById).then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          navigate('/');
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -186,7 +183,7 @@ const EditItem = () => {
 
   const getItembyid = async (id) => {
     try {
-      await axios.get(`http://localhost:8000/api/items/${id}`).then((res) => {
+      await axios.get(`${API_LINK}items/${id}`).then((res) => {
         setItemById(res.data);
         console.log(res.data);
       });
@@ -300,7 +297,7 @@ const EditItem = () => {
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
             <label htmlFor='pax Name'>Minute Sheet Number</label>
             <input
-              type='number'
+              type='text'
               name='minuteSheetNumber'
               value={itemById?.minuteSheetNumber}
               placeholder='Minute Sheet Number'

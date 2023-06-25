@@ -3,6 +3,7 @@ import InputComponent from '../inputComponents/InputComponent';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { API_LINK } from '../../commons/Constants';
 
 const ExpenseType = () => {
   const [itemType, setItemType] = useState({
@@ -25,11 +26,9 @@ const ExpenseType = () => {
     e.preventDefault();
 
     try {
-      await axios
-        .post('http://localhost:8000/api/expensetypes', itemType)
-        .then((res) => {
-          console.log(res.data);
-        });
+      await axios.post(`${API_LINK}expensetypes`, itemType).then((res) => {
+        console.log(res.data);
+      });
 
       getItemTypes();
     } catch (error) {
@@ -39,7 +38,7 @@ const ExpenseType = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:8000/api/expensetypes/${id}`, {
+        .delete(`${API_LINK}expensetypes/${id}`, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => alert('Item Type deleted Successfully'));
@@ -51,7 +50,7 @@ const ExpenseType = () => {
   const getItemTypes = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/expensetypes', {
+        .get(`${API_LINK}expensetypes`, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => setItemTypes(res.data));
@@ -62,12 +61,9 @@ const ExpenseType = () => {
 
   const getItemTypeById = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/expensetypes/${id}`,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const response = await axios.get(`${API_LINK}expensetypes/${id}`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       setItemById(response.data);
     } catch (err) {
       console.log(err);
@@ -83,7 +79,7 @@ const ExpenseType = () => {
     console.log(id);
     try {
       await axios
-        .put(`http://localhost:8000/api/expensetypes/${id}`, data, {
+        .put(`${API_LINK}expensetypes/${id}`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => console.log(res.data));

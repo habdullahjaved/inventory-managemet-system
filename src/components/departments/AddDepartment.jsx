@@ -3,7 +3,7 @@ import InputComponent from '../inputComponents/InputComponent';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-
+import { API_LINK } from '../../commons/Constants';
 const AddDepartment = () => {
   const [Department, setDepartment] = useState({
     DepartmentName: '',
@@ -24,9 +24,10 @@ const AddDepartment = () => {
     e.preventDefault();
     try {
       await axios
-        .post('http://localhost:8000/api/departments', Department)
+        .post(`${API_LINK}departments`, Department)
         .then((res) => console.log(res.data));
       setDepartment();
+      getDepartments();
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +35,7 @@ const AddDepartment = () => {
 
   const getDepartments = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/departments');
+      const response = await axios.get(`${API_LINK}departments`);
       setDepartments(response.data);
     } catch (err) {
       console.log(err);
@@ -42,9 +43,7 @@ const AddDepartment = () => {
   };
   const getDepartmentById = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/departments/${id}`
-      );
+      const response = await axios.get(`${API_LINK}departments/${id}`);
       setDepartmentById(response.data);
     } catch (err) {
       console.log(err);
@@ -63,7 +62,7 @@ const AddDepartment = () => {
     console.log(id);
     try {
       await axios
-        .put(`http://localhost:8000/api/departments/${id}`, data, {
+        .put(`${API_LINK}departments/${id}`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => console.log(res.data));
@@ -77,7 +76,7 @@ const AddDepartment = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:8000/api/departments/${id}`)
+        .delete(`${API_LINK}departments/${id}`)
         .then((res) => alert('Department deleted Successfully'));
       getDepartments();
     } catch (err) {

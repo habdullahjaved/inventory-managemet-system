@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router';
 import axios from 'axios';
 import { useReactToPrint } from 'react-to-print';
+import { API_LINK } from '../../commons/Constants';
 
 const ViewExpense = () => {
   const { id } = useParams();
@@ -14,9 +15,7 @@ const ViewExpense = () => {
 
   const getItembyid = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/expenses/${id}`
-      );
+      const response = await axios.get(`${API_LINK}expenses/${id}`);
       setItem(response.data);
     } catch (error) {
       console.log(error);

@@ -113,6 +113,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router';
 import axios from 'axios';
 import { useReactToPrint } from 'react-to-print';
+import { API_LINK } from '../../commons/Constants';
 
 const ViewItem = () => {
   const { id } = useParams();
@@ -125,7 +126,7 @@ const ViewItem = () => {
 
   const getItembyid = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/items/${id}`);
+      const response = await axios.get(`${API_LINK}items/${id}`);
       setItem(response.data);
     } catch (error) {
       console.log(error);

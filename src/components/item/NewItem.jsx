@@ -3,6 +3,7 @@ import InputComponent from '../inputComponents/InputComponent';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { API_LINK } from '../../commons/Constants';
 
 const NewItem = () => {
   const [item, setItem] = useState({
@@ -21,12 +22,10 @@ const NewItem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post('http://localhost:8000/api/itemnames', item)
-        .then((res) => {
-          setItem('');
-          console.log(res.data);
-        });
+      await axios.post(`${API_LINK}itemnames`, item).then((res) => {
+        setItem('');
+        console.log(res.data);
+      });
 
       getItems();
     } catch (error) {
@@ -37,18 +36,14 @@ const NewItem = () => {
 
   const getItems = async () => {
     try {
-      await axios
-        .get('http://localhost:8000/api/itemnames')
-        .then((res) => setItems(res.data));
+      await axios.get(`${API_LINK}itemnames`).then((res) => setItems(res.data));
     } catch (error) {
       console.log(error);
     }
   };
   const getItemById = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/itemnames/${id}`
-      );
+      const response = await axios.get(`${API_LINK}itemnames/${id}`);
       setItemById(response.data);
     } catch (err) {
       console.log(err);
@@ -67,7 +62,7 @@ const NewItem = () => {
     console.log(id);
     try {
       await axios
-        .put(`http://localhost:8000/api/itemnames/${id}`, data, {
+        .put(`${API_LINK}itemnames/${id}`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => console.log(res.data));
@@ -85,7 +80,7 @@ const NewItem = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:8000/api/itemnames/${id}`)
+        .delete(`${API_LINK}itemnames/${id}`)
         .then((res) => alert('Item deleted Successfully'));
       getItems();
     } catch (err) {

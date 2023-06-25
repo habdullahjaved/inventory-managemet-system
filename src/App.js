@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  HashRouter,
+} from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
 import ProductListing from './pages/product/ProductListing';
 import AddProductPage from './pages/product/AddProductPage';
@@ -30,7 +35,7 @@ import ExpenseType from './components/expensetype/ExpenseType';
 function App() {
   return (
     <>
-      <Router>
+      <HashRouter>
         <div className='container-wrapper'>
           <div className='sidebar-wrapper'>
             <Sidebar />
@@ -63,7 +68,7 @@ function App() {
             </Routes>
           </div>
         </div>
-      </Router>
+      </HashRouter>
     </>
   );
 }

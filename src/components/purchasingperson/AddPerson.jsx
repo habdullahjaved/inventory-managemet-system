@@ -3,7 +3,7 @@ import InputComponent from '../inputComponents/InputComponent';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-
+import { API_LINK } from '../../commons/Constants';
 const AddPerson = () => {
   const [pPerson, setPPerson] = useState({
     Name: '',
@@ -22,11 +22,9 @@ const AddPerson = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post('http://localhost:8000/api/purchasingpersons', pPerson)
-        .then((res) => {
-          console.log(res.data);
-        });
+      await axios.post(`${API_LINK}purchasingpersons`, pPerson).then((res) => {
+        console.log(res.data);
+      });
       getPurchasingPersons();
     } catch (error) {
       console.log(error);
@@ -35,16 +33,12 @@ const AddPerson = () => {
   };
 
   const getPurchasingPersons = async () => {
-    const response = await axios.get(
-      'http://localhost:8000/api/purchasingpersons'
-    );
+    const response = await axios.get(`${API_LINK}purchasingpersons`);
     setPurchasingPersons(response.data);
   };
   const getPPersonById = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/purchasingpersons/${id}`
-      );
+      const response = await axios.get(`${API_LINK}purchasingpersons/${id}`);
       setPurPersonById(response.data);
     } catch (err) {
       console.log(err);
@@ -63,7 +57,7 @@ const AddPerson = () => {
     console.log(id);
     try {
       await axios
-        .put(`http://localhost:8000/api/purchasingpersons/${id}`, data, {
+        .put(`${API_LINK}purchasingpersons/${id}`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => console.log(res.data));
@@ -76,7 +70,7 @@ const AddPerson = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:8000/api/purchasingpersons/${id}`)
+        .delete(`${API_LINK}purchasingpersons/${id}`)
         .then((res) => alert('Person deleted Successfully'));
       getPurchasingPersons();
     } catch (err) {

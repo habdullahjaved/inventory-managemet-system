@@ -3,6 +3,7 @@ import InputComponent from '../inputComponents/InputComponent';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { API_LINK } from '../../commons/Constants';
 
 const NewItemType = () => {
   const [itemType, setItemType] = useState({
@@ -25,11 +26,9 @@ const NewItemType = () => {
     e.preventDefault();
 
     try {
-      await axios
-        .post('http://localhost:8000/api/itemtypes', itemType)
-        .then((res) => {
-          console.log(res.data);
-        });
+      await axios.post(`${API_LINK}itemtypes`, itemType).then((res) => {
+        console.log(res.data);
+      });
 
       getItemTypes();
     } catch (error) {
@@ -39,7 +38,7 @@ const NewItemType = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:8000/api/itemtypes/${id}`)
+        .delete(`${API_LINK}itemtypes/${id}`)
         .then((res) => alert('Item Type deleted Successfully'));
       getItemTypes();
     } catch (err) {
@@ -49,7 +48,7 @@ const NewItemType = () => {
   const getItemTypes = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/itemtypes')
+        .get(`${API_LINK}itemtypes`)
         .then((res) => setItemTypes(res.data));
     } catch (error) {
       console.log(error);
@@ -58,9 +57,7 @@ const NewItemType = () => {
 
   const getItemTypeById = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/itemtypes/${id}`
-      );
+      const response = await axios.get(`${API_LINK}itemtypes/${id}`);
       setItemById(response.data);
     } catch (err) {
       console.log(err);
@@ -76,7 +73,7 @@ const NewItemType = () => {
     console.log(id);
     try {
       await axios
-        .put(`http://localhost:8000/api/itemtypes/${id}`, data, {
+        .put(`${API_LINK}itemtypes/${id}`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => console.log(res.data));

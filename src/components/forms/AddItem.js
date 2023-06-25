@@ -3,6 +3,7 @@ import SelectComponent from './../inputComponents/SelectComponent';
 import InputComponent from './../inputComponents/InputComponent';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { API_LINK } from '../../commons/Constants';
 const AddItem = () => {
   const [item, setItem] = useState({
     ItemName: '',
@@ -41,7 +42,7 @@ const AddItem = () => {
   const getItemNames = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/itemnames')
+        .get(`${API_LINK}itemnames`)
         .then((res) => setItemNames(res.data));
     } catch (error) {
       console.log(error);
@@ -50,21 +51,19 @@ const AddItem = () => {
   const getItemTypes = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/itemtypes')
+        .get(`${API_LINK}itemtypes`)
         .then((res) => setItemTypes(res.data));
     } catch (error) {
       console.log(error);
     }
   };
   const getPurchasingPersons = async () => {
-    const response = await axios.get(
-      'http://localhost:8000/api/purchasingpersons'
-    );
+    const response = await axios.get(`${API_LINK}purchasingpersons`);
     setPurchasingPersons(response.data);
   };
   const getDepartments = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/departments');
+      const response = await axios.get(`${API_LINK}departments`);
       setDepartments(response.data);
     } catch (err) {
       console.log(err);
@@ -74,7 +73,7 @@ const AddItem = () => {
   const getAuthorities = async () => {
     try {
       await axios
-        .get('http://localhost:8000/api/authorities')
+        .get(`${API_LINK}authorities`)
         .then((res) => setAuthorities(res.data));
     } catch (error) {
       console.log(error);
@@ -89,7 +88,7 @@ const AddItem = () => {
     console.log(item);
 
     try {
-      await axios.post(`http://localhost:8000/api/items`, item).then((res) => {
+      await axios.post(`${API_LINK}items`, item).then((res) => {
         console.log(res.data);
         if (res.data) {
           navigate('/');
@@ -157,7 +156,7 @@ const AddItem = () => {
           <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
             <label htmlFor='pax Name'>Minute Sheet Number</label>
             <input
-              type='number'
+              type='text'
               name='minuteSheetNumber'
               value={minuteSheetNumber}
               placeholder='Minute Sheet Number'
@@ -203,7 +202,7 @@ const AddItem = () => {
             <input
               type='number'
               name='TotalCost'
-              value={TotalCost}
+              value={Quantity * RatePerUnit}
               placeholder='Total Cost'
               className='form-control'
               onChange={handleChange}
