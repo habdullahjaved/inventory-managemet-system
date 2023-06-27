@@ -86,7 +86,17 @@ const AddExpense = () => {
   };
 
   const handleChange = (e) => {
-    setItem({ ...item, [e.target.name]: e.target.value });
+    // setItem({ ...item, [e.target.name]: e.target.value });
+
+    const { name, value } = e.target;
+
+    if (name === 'Quantity' || name === 'RatePerUnit') {
+      const updatedTotalCost =
+        name === 'Quantity' ? value * RatePerUnit : value * Quantity;
+      setItem({ ...item, [name]: value, TotalCost: updatedTotalCost });
+    } else {
+      setItem({ ...item, [name]: value });
+    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -181,12 +191,46 @@ const AddExpense = () => {
               />
             </div>
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+              <label htmlFor='pax Name'>Date of Purchase</label>
+              <input
+                type='date'
+                name='DateOfPurchase'
+                value={DateOfPurchase}
+                placeholder='Date of Purchase'
+                className='form-control'
+                onChange={handleChange}
+              />
+            </div>
+            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
               <label htmlFor='pax Name'>Quantity</label>
               <input
                 type='number'
                 name='Quantity'
                 value={Quantity}
                 placeholder='Quantity'
+                className='form-control'
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+              <label htmlFor='pax Name'>Rate per Unit</label>
+              <input
+                type='number'
+                name='RatePerUnit'
+                value={RatePerUnit}
+                placeholder={'Rate per Unit'}
+                className='form-control'
+                onChange={handleChange}
+              />
+            </div>
+            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+              <label htmlFor='pax Name'>Total Cost</label>
+              <input
+                type='number'
+                name='TotalCost'
+                value={TotalCost}
+                placeholder='Total Cost'
                 className='form-control'
                 onChange={handleChange}
               />
@@ -215,40 +259,6 @@ const AddExpense = () => {
                 ))}
               </select>
             </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Date of Purchase</label>
-              <input
-                type='date'
-                name='DateOfPurchase'
-                value={DateOfPurchase}
-                placeholder='Date of Purchase'
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Rate per Unit</label>
-              <input
-                type='number'
-                name='RatePerUnit'
-                value={RatePerUnit}
-                placeholder={'Rate per Unit'}
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Total Cost</label>
-              <input
-                type='number'
-                name='TotalCost'
-                value={TotalCost}
-                placeholder='Total Cost'
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
               <label htmlFor='ctype'>Department</label>
               <select

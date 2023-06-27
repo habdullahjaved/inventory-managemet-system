@@ -103,7 +103,18 @@ const EditExpense = () => {
   };
 
   const handleChange = (e) => {
-    setItemById({ ...itemById, [e.target.name]: e.target.value });
+    // setItemById({ ...itemById, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === 'Quantity' || name === 'RatePerUnit') {
+      const updatedTotalCost =
+        name === 'Quantity'
+          ? value * itemById.RatePerUnit
+          : value * itemById.Quantity;
+      setItemById({ ...itemById, [name]: value, TotalCost: updatedTotalCost });
+    } else {
+      setItemById({ ...itemById, [name]: value });
+    }
   };
   const handleSubmit = async (e, id) => {
     e.preventDefault();
@@ -209,12 +220,46 @@ const EditExpense = () => {
               />
             </div>
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+              <label htmlFor='pax Name'>Date of Purchase</label>
+              <input
+                type='date'
+                name='DateOfPurchase'
+                value={itemById?.DateOfPurchase}
+                placeholder='Date of Purchase'
+                className='form-control'
+                onChange={handleChange}
+              />
+            </div>
+            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
               <label htmlFor='pax Name'>Quantity</label>
               <input
                 type='number'
                 name='Quantity'
                 value={itemById?.Quantity}
                 placeholder='Quantity'
+                className='form-control'
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+              <label htmlFor='pax Name'>Rate per Unit</label>
+              <input
+                type='number'
+                name='RatePerUnit'
+                value={itemById?.RatePerUnit}
+                placeholder={'Rate per Unit'}
+                className='form-control'
+                onChange={handleChange}
+              />
+            </div>
+            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
+              <label htmlFor='pax Name'>Total Cost</label>
+              <input
+                type='number'
+                name='TotalCost'
+                value={itemById?.TotalCost}
+                placeholder='Total Cost'
                 className='form-control'
                 onChange={handleChange}
               />
@@ -245,40 +290,6 @@ const EditExpense = () => {
                 ))}
               </select>
             </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Date of Purchase</label>
-              <input
-                type='date'
-                name='DateOfPurchase'
-                value={itemById?.DateOfPurchase}
-                placeholder='Date of Purchase'
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Rate per Unit</label>
-              <input
-                type='number'
-                name='RatePerUnit'
-                value={itemById?.RatePerUnit}
-                placeholder={'Rate per Unit'}
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Total Cost</label>
-              <input
-                type='number'
-                name='TotalCost'
-                value={itemById?.TotalCost}
-                placeholder='Total Cost'
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
               <label htmlFor='ctype'>Department</label>
               <select

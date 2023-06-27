@@ -94,12 +94,13 @@ const ListExpense = () => {
                           <th>Type</th>
                           <th>Description</th>
                           <th>MinuteSheet Number</th>
-                          <th>Quantity</th>
-                          <th>Expense</th>
-                          <th>Expense Type</th>
                           <th className='text-wrap'>Date of Purchase</th>
+                          <th>Quantity</th>
                           <th className='text-wrap'>Rate Per Unit</th>
                           <th>Total Cost</th>
+                          <th>Expense</th>
+                          <th>Expense Type</th>
+
                           <th>Department</th>
                           <th>Purchasing Person</th>
                           <th>Actions</th>
@@ -131,12 +132,12 @@ const ListExpense = () => {
                                 <td>{ItemType}</td>
                                 <td>{Description}</td>
                                 <td>{minuteSheetNumber}</td>
-                                <td>{Quantity}</td>
-                                <td>{expense_ammount}</td>
-                                <td>{expense_type}</td>
                                 <td>{DateOfPurchase}</td>
+                                <td>{Quantity}</td>
                                 <td>{RatePerUnit}</td>
                                 <td>{TotalCost}</td>
+                                <td>{expense_ammount}</td>
+                                <td>{expense_type}</td>
                                 <td>{department.DepartmentName}</td>
                                 <td>{purchasing_person.Name}</td>
 
