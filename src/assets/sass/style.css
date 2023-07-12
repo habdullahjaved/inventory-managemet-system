@@ -195,6 +195,14 @@ ul {
   font-weight: bold;
 }
 
+.pagination .next-button {
+  background: green;
+  border: 0px;
+  padding: 6px 20px;
+  border-radius: 10px;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .card-margin-top {
     margin-top: 10px !important;
