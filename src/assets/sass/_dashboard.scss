@@ -3,3 +3,19 @@
   padding: 0px;
   box-sizing: border-box;
 }
+.home-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.welcm-title {
+  background-color: #fff;
+  color: #0d6efd;
+  text-align: center;
+  padding: 10px;
+}
+.logo-img {
+  height: 420px;
+  width: 420px;
+}

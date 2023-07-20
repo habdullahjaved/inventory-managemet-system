@@ -70,20 +70,85 @@ const ItemListing = () => {
     e.preventDefault();
   };
   const componentRef = useRef(null);
-
-  // const handlePrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  // });
-
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
     onBeforePrint: () => {
       setHideActions(true);
+    },
+    content: () => {
+      const tableContent = componentRef.current.cloneNode(true);
+      const actionsColumnHeaders = tableContent.querySelectorAll(
+        'th[data-hide-print]'
+      );
+      const actionsColumnCells = tableContent.querySelectorAll(
+        'td[data-hide-print]'
+      );
+      actionsColumnHeaders.forEach((header) => {
+        header.style.display = 'none';
+      });
+      actionsColumnCells.forEach((cell) => {
+        cell.style.display = 'none';
+      });
+
+      // Hide last child th and td elements
+      const lastHeader = tableContent.querySelector('th:last-child');
+      const lastCell = tableContent.querySelector('td:last-child');
+      if (lastHeader) {
+        lastHeader.style.display = 'none';
+      }
+      if (lastCell) {
+        lastCell.style.display = 'none';
+      }
+
+      // Add space around the print container
+      tableContent.style.padding = '1rem';
+      tableContent.style.margin = '1rem';
+
+      // Add the date in the print title
+      const date = new Date().toLocaleDateString();
+      const title = document.createElement('p');
+      title.textContent = `Items - Printed on ${date}`;
+      tableContent.insertBefore(title, tableContent.firstChild);
+
+      // Apply a better print format
+      const style = document.createElement('style');
+      style.textContent = `
+    @media print {
+      body {
+        background-color: #fff;
+      }
+      p {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+      }
+      th, td {
+        border: 1px solid #000;
+        padding: 0.5rem;
+        text-align: left;
+         white-space: wrap !important;
+      }
+      th:nth-last-child(1){
+        display:none;
+      }
+       td:nth-last-child(1){
+        display:none;
+      }
+    }
+  `;
+      tableContent.insertBefore(style, tableContent.firstChild);
+
+      return tableContent;
     },
     onAfterPrint: () => {
       setHideActions(false);
     },
   });
+
+  console.log(hideActions);
   const handleView = (id) => {};
   const handleEdit = (id) => {};
   const handleDelete = async (id) => {
@@ -167,7 +232,12 @@ const ItemListing = () => {
                           <th>Department</th>
                           <th>Purchasing Person</th>
                           <th>On Charge Of</th>
-                          {!hideActions && <th>Actions</th>}
+                          <th
+                            data-hide-print
+                            className={hideActions ? 'print-hide' : ''}
+                          >
+                            Actions
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -191,45 +261,48 @@ const ItemListing = () => {
                                 purchasing_person,
                                 department,
                               }) => (
-                                <>
-                                  <tr key={ItemID}>
-                                    <td>{ItemName}</td>
-                                    <td>{ItemType}</td>
-                                    <td>{Description}</td>
-                                    <td>{minuteSheetNumber}</td>
-                                    <td>{DateOfPurchase}</td>
-                                    <td>{Quantity}</td>
-                                    <td>{RatePerUnit}</td>
-                                    <td>{TotalCost}</td>
-                                    <td>{department.DepartmentName}</td>
-                                    <td>{purchasing_person.Name}</td>
-                                    <td>{authorityname}</td>
-                                    {!hideActions && (
-                                      <td>
-                                        <div className='btn-group' role='group'>
-                                          <Link
-                                            className='btn btn-primary btn-sm'
-                                            to={`/viewitem/${ItemID}`}
-                                          >
-                                            View
-                                          </Link>
-                                          <Link
-                                            to={`/edititem/${ItemID}`}
-                                            className='btn btn-success btn-sm'
-                                          >
-                                            Edit
-                                          </Link>
-                                          <button
-                                            className='btn btn-danger btn-sm'
-                                            onClick={() => handleDelete(ItemID)}
-                                          >
-                                            Delete
-                                          </button>
-                                        </div>
-                                      </td>
-                                    )}
-                                  </tr>
-                                </>
+                                <tr key={ItemID}>
+                                  <td>{ItemName}</td>
+                                  <td>{ItemType}</td>
+                                  <td>{Description}</td>
+                                  <td>{minuteSheetNumber}</td>
+                                  <td>{DateOfPurchase}</td>
+                                  <td>{Quantity}</td>
+                                  <td>{RatePerUnit}</td>
+                                  <td>{TotalCost}</td>
+                                  <td>{department.DepartmentName}</td>
+                                  <td>{purchasing_person.Name}</td>
+                                  <td>{authorityname}</td>
+                                  {!hideActions && (
+                                    <td
+                                      data-hide-print
+                                      className={
+                                        hideActions ? 'print-hide' : ''
+                                      }
+                                    >
+                                      <div className='btn-group' role='group'>
+                                        <Link
+                                          className='btn btn-primary btn-sm'
+                                          to={`/viewitem/${ItemID}`}
+                                        >
+                                          View
+                                        </Link>
+                                        <Link
+                                          to={`/edititem/${ItemID}`}
+                                          className='btn btn-success btn-sm'
+                                        >
+                                          Edit
+                                        </Link>
+                                        <button
+                                          className='btn btn-danger btn-sm'
+                                          onClick={() => handleDelete(ItemID)}
+                                        >
+                                          Delete
+                                        </button>
+                                      </div>
+                                    </td>
+                                  )}
+                                </tr>
                               )
                             )
                         ) : (
@@ -249,7 +322,7 @@ const ItemListing = () => {
                           <td></td>
                           <td></td>
                           <td></td>
-                          <td></td>
+                          {!hideActions && <td></td>}
                         </tr>
                       </tbody>
                     </table>
@@ -284,10 +357,10 @@ const ItemListing = () => {
               </div>
             </div>
           </div>
-          <div className='row mx-auto'>
+          <div className='row mx-auto mt-2'>
             <div className='col-md-6'>
               <button className='btn btn-success' onClick={handlePrint}>
-                Print Table
+                Print Items
               </button>
             </div>
           </div>

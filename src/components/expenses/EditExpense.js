@@ -167,33 +167,28 @@ const EditExpense = () => {
         <form className='search-flight'>
           <div className='row mb-1 mt-3'>
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='ctype'>Item</label>
-
-              <select
-                name='ItemName'
-                id=''
+              <label htmlFor='pax Name'>Expense</label>
+              <input
+                type='text'
+                name='expense_ammount'
+                placeholder='Expense'
+                value={itemById?.expense_ammount}
+                className='form-control'
                 onChange={handleChange}
-                className='form-select mt-1'
-                value={itemById?.ItemName}
-              >
-                <option value=''>Slect Item Name</option>
-                {itemNames.map((item) => (
-                  <option value={item.ItemName}>{item.ItemName}</option>
-                ))}
-              </select>
+              />
             </div>
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='ctype'>Item Type</label>
+              <label htmlFor='ctype'>Expense Type</label>
               <select
-                name='ItemType'
+                name='expense_type'
                 id=''
                 onChange={handleChange}
                 className='form-select mt-1'
-                value={itemById?.ItemType}
+                value={itemById?.expense_type}
               >
-                <option value=''>Slect Item Type</option>
-                {itemTypes?.map((item) => (
-                  <option value={item.ItemType}>{item.ItemType}</option>
+                <option value=''>Select Expense Type</option>
+                {expenses?.map((item) => (
+                  <option value={item.expense_type}>{item.expense_type}</option>
                 ))}
               </select>
             </div>
@@ -264,32 +259,7 @@ const EditExpense = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Expense</label>
-              <input
-                type='number'
-                name='expense_ammount'
-                placeholder='Expense'
-                value={itemById?.expense_ammount}
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='ctype'>Expense Type</label>
-              <select
-                name='expense_type'
-                id=''
-                onChange={handleChange}
-                className='form-select mt-1'
-                value={itemById?.expense_type}
-              >
-                <option value=''>Slect Expense Type</option>
-                {expenses?.map((item) => (
-                  <option value={item.expense_type}>{item.expense_type}</option>
-                ))}
-              </select>
-            </div>
+
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
               <label htmlFor='ctype'>Department</label>
               <select
@@ -299,7 +269,7 @@ const EditExpense = () => {
                 className='form-select mt-1'
                 value={itemById?.DepartmentID}
               >
-                <option value=''>Slect Department</option>
+                <option value=''>Select Department</option>
                 {departments.map((item) => (
                   <option value={item.DepartmentID}>
                     {item.DepartmentName}
@@ -316,7 +286,7 @@ const EditExpense = () => {
                 className='form-select mt-1'
                 value={itemById?.PurchasingPersonID}
               >
-                <option value=''>Slect Person</option>
+                <option value=''>Select Person</option>
                 {purchasingPersons.map((item) => (
                   <option value={item.PurchasingPersonID}>{item.Name}</option>
                 ))}
@@ -330,7 +300,7 @@ const EditExpense = () => {
                 className='btn btn-primary btn-lg w-100 p-2'
                 onClick={(e) => handleSubmit(e, itemById?.id)}
               >
-                Submit
+                Update
               </button>
             </div>
           </div>

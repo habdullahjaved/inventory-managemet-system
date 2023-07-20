@@ -225,7 +225,7 @@ const EditItem = () => {
               className='form-select mt-1'
               value={itemById?.ItemName}
             >
-              <option value=''>Slect Item Name</option>
+              <option value=''>Select Item Name</option>
               {itemNames.map((item, index) => (
                 <option
                   value={item.ItemName}
@@ -245,7 +245,7 @@ const EditItem = () => {
               className='form-select mt-1'
               value={itemById?.ItemType}
             >
-              <option value=''>Slect Item Type</option>
+              <option value=''>Select Item Type</option>
               {itemTypes?.map((item) => (
                 <option value={item.ItemType}>{item.ItemType}</option>
               ))}
@@ -328,7 +328,7 @@ const EditItem = () => {
               className='form-select mt-1'
               value={itemById?.DepartmentID}
             >
-              <option value=''>Slect Department</option>
+              <option value=''>Select Department</option>
               {departments.map((item) => (
                 <option
                   value={item.DepartmentID}
@@ -350,7 +350,7 @@ const EditItem = () => {
               className='form-select mt-1'
               value={itemById?.PurchasingPersonID}
             >
-              <option value=''>Slect Person</option>
+              <option value=''>Select Person</option>
               {purchasingPersons.map((item) => (
                 <option value={item.PurchasingPersonID}>{item.Name}</option>
               ))}
@@ -365,7 +365,7 @@ const EditItem = () => {
               className='form-select mt-1'
               value={itemById?.authorityname}
             >
-              <option value=''>Slect Person</option>
+              <option value=''>Select Person</option>
               {authorities?.map((item) => (
                 <option value={item.authorityname}>{item.authorityname}</option>
               ))}

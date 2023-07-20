@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, ChevronDown } from 'react-bootstrap-icons';
+import logo from './../../assets/images/logopng.png';
 const Sidebar = () => {
   const [menus, setMenus] = useState([
     {
@@ -25,6 +26,26 @@ const Sidebar = () => {
     },
     {
       id: 3,
+      title: 'Equipment Issuance',
+      icon: <ChevronRight />,
+      isOpen: false,
+      submenu: [
+        { id: 1, title: 'Issue Equipment', link: '/issueequipment' },
+        { id: 2, title: 'Issued Equipments ', link: '/issuedequipments' },
+      ],
+    },
+    {
+      id: 4,
+      title: 'Equipment Receiving',
+      icon: <ChevronRight />,
+      isOpen: false,
+      submenu: [
+        { id: 1, title: 'Equipment Receiving', link: '/receiveequipment' },
+        { id: 2, title: 'Received Equipments', link: '/receivedequipment' },
+      ],
+    },
+    {
+      id: 5,
       title: 'New Item',
       icon: <ChevronRight />,
       isOpen: false,
@@ -35,7 +56,7 @@ const Sidebar = () => {
       ],
     },
     {
-      id: 4,
+      id: 6,
       title: 'New Department',
       icon: <ChevronRight />,
       isOpen: false,
@@ -46,7 +67,7 @@ const Sidebar = () => {
       ],
     },
     {
-      id: 5,
+      id: 7,
       title: 'New Person',
       icon: <ChevronRight />,
       isOpen: false,
@@ -57,7 +78,7 @@ const Sidebar = () => {
       ],
     },
     {
-      id: 6,
+      id: 8,
       title: 'New Item Type',
       icon: <ChevronRight />,
       isOpen: false,
@@ -68,7 +89,7 @@ const Sidebar = () => {
       ],
     },
     {
-      id: 7,
+      id: 9,
       title: 'Authority',
       icon: <ChevronRight />,
       isOpen: false,
@@ -76,11 +97,19 @@ const Sidebar = () => {
       submenu: [],
     },
     {
-      id: 8,
+      id: 10,
       title: 'Expense Type',
       icon: <ChevronRight />,
       isOpen: false,
       link: '/expensetype',
+      submenu: [],
+    },
+    {
+      id: 11,
+      title: 'Locations',
+      icon: <ChevronRight />,
+      isOpen: false,
+      link: '/location',
       submenu: [],
     },
   ]);
@@ -96,7 +125,10 @@ const Sidebar = () => {
   return (
     <div>
       <div className='sidebar'>
-        <h2 className='logo '>IMS</h2>
+        {/* <div className='logo'>
+          <img src={logo} alt='' />
+        </div> */}
+        <h2 className='logo '>LIMS</h2>
       </div>
       <div className='sidebar-nav'>
         <nav>

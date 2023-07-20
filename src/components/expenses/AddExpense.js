@@ -140,31 +140,26 @@ const AddExpense = () => {
         <form className='search-flight' onSubmit={handleSubmit}>
           <div className='row mb-1 mt-3'>
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='ctype'>Item</label>
-
-              <select
-                name='ItemName'
-                id=''
+              <label htmlFor='pax Name'>Expense</label>
+              <input
+                type='text'
+                name='expense_ammount'
+                placeholder='Expense'
+                className='form-control'
                 onChange={handleChange}
-                className='form-select mt-1'
-              >
-                <option value=''>Slect Item Name</option>
-                {itemNames.map((item) => (
-                  <option value={item.ItemName}>{item.ItemName}</option>
-                ))}
-              </select>
+              />
             </div>
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='ctype'>Item Type</label>
+              <label htmlFor='ctype'>Expense Type</label>
               <select
-                name='ItemType'
+                name='expense_type'
                 id=''
                 onChange={handleChange}
                 className='form-select mt-1'
               >
-                <option value=''>Slect Item Type</option>
-                {itemTypes?.map((item) => (
-                  <option value={item.ItemType}>{item.ItemType}</option>
+                <option value=''>Select Expense Type</option>
+                {expenses?.map((item) => (
+                  <option value={item.expense_type}>{item.expense_type}</option>
                 ))}
               </select>
             </div>
@@ -235,30 +230,7 @@ const AddExpense = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='pax Name'>Expense</label>
-              <input
-                type='number'
-                name='expense_ammount'
-                placeholder='Expense'
-                className='form-control'
-                onChange={handleChange}
-              />
-            </div>
-            <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
-              <label htmlFor='ctype'>Expense Type</label>
-              <select
-                name='expense_type'
-                id=''
-                onChange={handleChange}
-                className='form-select mt-1'
-              >
-                <option value=''>Slect Expense Type</option>
-                {expenses?.map((item) => (
-                  <option value={item.expense_type}>{item.expense_type}</option>
-                ))}
-              </select>
-            </div>
+
             <div className='col-lg-3  col-md-6 mt-1 mb-4 '>
               <label htmlFor='ctype'>Department</label>
               <select
@@ -267,7 +239,7 @@ const AddExpense = () => {
                 onChange={handleChange}
                 className='form-select mt-1'
               >
-                <option value=''>Slect Department</option>
+                <option value=''>Select Department</option>
                 {departments.map((item) => (
                   <option value={item.DepartmentID}>
                     {item.DepartmentName}
@@ -283,7 +255,7 @@ const AddExpense = () => {
                 onChange={handleChange}
                 className='form-select mt-1'
               >
-                <option value=''>Slect Person</option>
+                <option value=''>Select Person</option>
                 {purchasingPersons.map((item) => (
                   <option value={item.PurchasingPersonID}>{item.Name}</option>
                 ))}

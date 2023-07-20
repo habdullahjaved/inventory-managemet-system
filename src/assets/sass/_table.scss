@@ -24,3 +24,11 @@
     color: white;
   }
 }
+.print-hide {
+  display: none !important;
+}
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+}

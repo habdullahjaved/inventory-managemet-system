@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 import axios from 'axios';
 import { useReactToPrint } from 'react-to-print';
 import { API_LINK } from '../../commons/Constants';
-const ListExpense = () => {
+const IssuedEquipment = () => {
   const [searchInput, setSearchInput] = useState('');
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +15,7 @@ const ListExpense = () => {
   const [sumRatePerUnit, setSumRatePerUnit] = useState(0);
   const [perPage, setPerPage] = useState(5);
   const [hideActions, setHideActions] = useState(false); //hideactions while print
+
   const handleSearch = (e) => {
     setSearchInput(e.target.value);
     setCurrentPage(1); // Reset current page when search query changes
@@ -23,7 +24,7 @@ const ListExpense = () => {
 
   const fetchItems = async (page, perPage, searchQuery = '') => {
     try {
-      const response = await axios.get(`${API_LINK}expenses`, {
+      const response = await axios.get(`${API_LINK}equipment-issuances`, {
         params: {
           page,
           per_page: perPage,
@@ -56,15 +57,16 @@ const ListExpense = () => {
     setCurrentPage(1); // Reset current page when number of items per page changes
     fetchItems(1, selectedPerPage, searchInput); // Fetch items with updated per page value
   };
+  // ItemName: '',
+  //  Quantity: 0,
+  //  DateOut: '',
+  //  TimeOut: '',
+  //  ReceivingPerson: '',
+  //  Location: '',
   const searchItems = (searchInput) => (item) =>
-    item.expense_ammount.toLowerCase().includes(searchInput.toLowerCase()) ||
-    item.expense_type.toLowerCase().includes(searchInput.toLowerCase()) ||
-    item.purchasing_person.Name.toLowerCase().includes(
-      searchInput.toLowerCase()
-    ) ||
-    item.department.DepartmentName.toLowerCase().includes(
-      searchInput.toLowerCase()
-    );
+    item.ItemName.toLowerCase().includes(searchInput.toLowerCase()) ||
+    item.ReceivingPerson.toLowerCase().includes(searchInput.toLowerCase()) ||
+    item.Location.toLowerCase().includes(searchInput.toLowerCase());
   const handleSearchSubmit = (e) => {
     e.preventDefault();
   };
@@ -105,7 +107,7 @@ const ListExpense = () => {
       // Add the date in the print title
       const date = new Date().toLocaleDateString();
       const title = document.createElement('p');
-      title.textContent = `Expenses - Printed on ${date}`;
+      title.textContent = `Equipment Issued - Printed on ${date}`;
       tableContent.insertBefore(title, tableContent.firstChild);
 
       // Apply a better print format
@@ -146,11 +148,13 @@ const ListExpense = () => {
       setHideActions(false);
     },
   });
+
+  console.log(hideActions);
   const handleView = (id) => {};
   const handleEdit = (id) => {};
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_LINK}expenses/${id}`).then((res) => {
+      await axios.delete(`${API_LINK}equipment-issuances/${id}`).then((res) => {
         console.log(res.data);
         alert('Item deleted Succefully');
         fetchItems(currentPage, perPage);
@@ -164,18 +168,20 @@ const ListExpense = () => {
     Aos.init();
     fetchItems(currentPage, perPage);
   }, []);
+
+  console.log('perpage', perPage);
   return (
-    <div className='page-wrapper'>
-      <h2 className='page-title ps-3'>Expenses</h2>
+    <div className='page-wrapper '>
+      <h2 className='page-title ms-2'>Issued Equipment</h2>
       <div className='container'>
         <div className='row'>
           <div className='col-sm-12 col-md-12 col-lg-12'>
             <div className='card py-4 agent-void-card' data-aos='fade-up'>
-              <div className='row'>
+              <div className='row ms-3'>
                 <div className='col-md-6'>
                   <form
                     onSubmit={(e) => handleSearchSubmit(e)}
-                    className='d-flex justify-content-start ps-3'
+                    className='d-flex justify-content-start'
                   >
                     <label htmlFor='search' className='mt-2'>
                       Search:
@@ -185,7 +191,7 @@ const ListExpense = () => {
                       name='searchbar'
                       placeholder='Search here...'
                       value={searchInput}
-                      className='form-control w-50'
+                      className='form-control ms-2 w-50'
                       onChange={(e) => handleSearch(e)}
                     />
                   </form>
@@ -213,87 +219,86 @@ const ListExpense = () => {
 
               <div className='row'>
                 <div className='col-sm-12 col-md-12 col-lg-12'>
-                  <div className='table-responsive mt-2'>
+                  <div className='table-responsive mt-2 '>
                     <div ref={componentRef} className='print-table-container'>
                       <table className='table table-bordered table-striped'>
                         <thead>
                           <tr>
-                            <th>Expense</th>
-                            <th>Expense Type</th>
-                            <th>Description</th>
-                            <th>MinuteSheet Number</th>
-                            <th className='text-wrap'>Date of Purchase</th>
+                            <th className='text-wrap'>Name</th>
                             <th>Quantity</th>
-                            <th className='text-wrap'>Rate Per Unit</th>
-                            <th>Total Cost</th>
-                            <th>Department</th>
-                            <th>Purchasing Person</th>
-                            <th>Actions</th>
+                            <th>Date Out</th>
+                            <th>Time Out</th>
+                            <th className='text-wrap'>Receiving Person</th>
+                            <th>Location</th>
+
+                            <th
+                              data-hide-print
+                              className={hideActions ? 'print-hide' : ''}
+                            >
+                              Actions
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           {items && items.length > 0 ? (
-                            items?.filter(searchItems(searchInput))?.map(
-                              ({
-                                id,
-                                Description,
-                                Quantity,
-                                DateOfPurchase,
-                                RatePerUnit,
-                                TotalCost,
-                                minuteSheetNumber,
-                                DepartmentID,
-                                PurchasingPersonID,
+                            items
+                              ?.filter(searchItems(searchInput))
+                              ?.map(
+                                ({
+                                  id,
+                                  ItemName,
+                                  Quantity,
+                                  DateOut,
+                                  TimeOut,
+                                  ReceivingPerson,
+                                  Location,
+                                }) => (
+                                  <tr key={id}>
+                                    <td>{ItemName}</td>
 
-                                purchasing_person,
-                                department,
-                                expense_type,
-                                expense_ammount,
-                              }) => (
-                                <tr key={id}>
-                                  <td>{expense_ammount}</td>
-                                  <td>{expense_type}</td>
-                                  <td>{Description}</td>
-                                  <td>{minuteSheetNumber}</td>
-                                  <td>{DateOfPurchase}</td>
-                                  <td>{Quantity}</td>
-                                  <td>{RatePerUnit}</td>
-                                  <td>{TotalCost}</td>
-
-                                  <td>{department.DepartmentName}</td>
-                                  <td>{purchasing_person.Name}</td>
-
-                                  <td>
-                                    <div className='btn-group' role='group'>
-                                      <Link
-                                        className='btn btn-primary btn-sm'
-                                        to={`/viewexpense/${id}`}
+                                    <td>{Quantity}</td>
+                                    <td>{DateOut}</td>
+                                    <td>{TimeOut}</td>
+                                    <td>{ReceivingPerson}</td>
+                                    <td>{Location}</td>
+                                    {!hideActions && (
+                                      <td
+                                        data-hide-print
+                                        className={
+                                          hideActions ? 'print-hide' : ''
+                                        }
                                       >
-                                        View
-                                      </Link>
-                                      <Link
-                                        to={`/editexpense/${id}`}
-                                        className='btn btn-success btn-sm'
-                                      >
-                                        Edit
-                                      </Link>
-                                      <button
-                                        className='btn btn-danger btn-sm'
-                                        onClick={() => handleDelete(id)}
-                                      >
-                                        Delete
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
+                                        <div className='btn-group' role='group'>
+                                          <Link
+                                            className='btn btn-primary btn-sm'
+                                            to={`/viewissuedequipments/${id}`}
+                                          >
+                                            View
+                                          </Link>
+                                          <Link
+                                            to={`/editissued/${id}`}
+                                            className='btn btn-success btn-sm'
+                                          >
+                                            Edit
+                                          </Link>
+                                          <button
+                                            className='btn btn-danger btn-sm'
+                                            onClick={() => handleDelete(id)}
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </td>
+                                    )}
+                                  </tr>
+                                )
                               )
-                            )
                           ) : (
                             <tr>
                               <td colSpan='12'>No items found.</td>
                             </tr>
                           )}
-                          <tr>
+                          {/* <tr>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -305,14 +310,14 @@ const ListExpense = () => {
                             <td></td>
                             <td></td>
                             <td></td>
-                          </tr>
+                            {!hideActions && <td></td>}
+                          </tr> */}
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
               </div>
-              {/* pagination */}
               <div className='row mx-auto'>
                 <div className='col-md-6'>
                   <div className='pagination'>
@@ -340,12 +345,12 @@ const ListExpense = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className='row mx-auto mt-2'>
-            <div className='col-md-6'>
-              <button className='btn btn-success' onClick={handlePrint}>
-                Print Expenses
-              </button>
+            <div className='row mx-auto mt-2'>
+              <div className='col-md-6'>
+                <button className='btn btn-success' onClick={handlePrint}>
+                  Print
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -354,4 +359,4 @@ const ListExpense = () => {
   );
 };
 
-export default ListExpense;
+export default IssuedEquipment;
